@@ -1,0 +1,39 @@
+
+    Future http1 = getHttp1("test");
+    http1.then((val) {
+//      setS
+    });
+
+
+void getHttp() async {
+    try {
+      Response response = await Dio().request("http://www.baidu.com");
+      print(response);
+    } catch (e) {
+      return print(e);
+    }
+  }
+
+  Future getHttp1(String text) async {
+    try {
+      Map<String, String> map = new Map();
+      map["name"] = text;
+      Response response =
+          await Dio().get("http://www.baidu.com", queryParameters: map);
+      return response.data;
+    } catch (e) {
+      return print(e);
+    }
+  }
+
+  Future postHttp1(String text) async {
+    try {
+      Map<String, String> map = new Map();
+      map["name"] = text;
+      Response response =
+      await Dio().post("http://www.baidu.com", queryParameters: map);
+      return response.data;
+    } catch (e) {
+      return print(e);
+    }
+  }
