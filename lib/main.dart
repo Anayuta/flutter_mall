@@ -6,17 +6,18 @@ import 'package:flutter_shop/provide/category_goods_list.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_shop/routers/routers.dart';
 import 'package:flutter_shop/routers/application.dart';
+import 'package:flutter_shop/provide/details_info.dart';
 
 void main() {
   //全局状态控制,采用provide方式
   ChildCategory category = new ChildCategory();
   CategoryGoodsListProvide categoryGoodsListProvide =
       new CategoryGoodsListProvide();
+  DetailsInfoProvide detailsInfoProvide = new DetailsInfoProvide();
   Providers providers = new Providers();
   providers..provide(Provider<ChildCategory>.value(category));
-  providers
-    ..provide(
-        Provider<CategoryGoodsListProvide>.value(categoryGoodsListProvide));
+  providers..provide(Provider<CategoryGoodsListProvide>.value(categoryGoodsListProvide));
+  providers..provide(Provider<DetailsInfoProvide>.value(detailsInfoProvide));
 
   runApp(ProviderNode(child: new MyApp(), providers: providers));
 }

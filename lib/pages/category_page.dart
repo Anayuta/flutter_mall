@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:flutter_shop/config/service_url.dart';
+import 'package:flutter_shop/config/http_manager.dart';
 import 'package:flutter_shop/model/category.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provide/provide.dart';

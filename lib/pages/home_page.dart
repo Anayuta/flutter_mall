@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'dart:convert';
-import 'package:flutter_shop/config/service_url.dart';
+import 'package:flutter_shop/config/http_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -222,9 +222,15 @@ class SwiperDiy extends StatelessWidget {
       child: Swiper(
         itemCount: swiperDateList.length,
         itemBuilder: (BuildContext context, int index) {
-          return Image.network(
-            swiperDateList[index]["image"],
-            fit: BoxFit.cover,
+          return new InkWell(
+            onTap: () {
+              Application.jumperDetail(
+                  context, swiperDateList[index]["goodsId"]);
+            },
+            child: Image.network(
+              swiperDateList[index]["image"],
+              fit: BoxFit.cover,
+            ),
           );
         },
         pagination: new SwiperPagination(),
@@ -354,9 +360,11 @@ class Recommend extends StatelessWidget {
   }
 
   //商品
-  Widget _item(int index) {
+  Widget _item(BuildContext context, int index) {
     return new InkWell(
-      onTap: () {},
+      onTap: () {
+        Application.jumperDetail(context, recommendList[index]["goodsId"]);
+      },
       child: new Container(
         height: ScreenUtil().setHeight(345),
         width: ScreenUtil().setWidth(250),
@@ -392,7 +400,7 @@ class Recommend extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemCount: recommendList.length,
           itemBuilder: (context, index) {
-            return _item(index);
+            return _item(context, index);
           }),
     );
   }
@@ -438,42 +446,42 @@ class FloorContent extends StatelessWidget {
     return new Container(
       child: new Column(
         children: <Widget>[
-          _firstRow(),
-          _otherGoods(),
+          _firstRow(context),
+          _otherGoods(context),
         ],
       ),
     );
   }
 
-  Widget _firstRow() {
+  Widget _firstRow(BuildContext context) {
     return new Row(
       children: <Widget>[
-        _goodsItem(floorGoodsList[0]),
+        _goodsItem(context,floorGoodsList[0]),
         new Column(
           children: <Widget>[
-            _goodsItem(floorGoodsList[1]),
-            _goodsItem(floorGoodsList[2]),
+            _goodsItem(context,floorGoodsList[1]),
+            _goodsItem(context,floorGoodsList[2]),
           ],
         ),
       ],
     );
   }
 
-  Widget _otherGoods() {
+  Widget _otherGoods(BuildContext context) {
     return new Row(
       children: <Widget>[
-        _goodsItem(floorGoodsList[3]),
-        _goodsItem(floorGoodsList[4]),
+        _goodsItem(context,floorGoodsList[3]),
+        _goodsItem(context,floorGoodsList[4]),
       ],
     );
   }
 
-  Widget _goodsItem(Map goods) {
+  Widget _goodsItem(BuildContext context,Map goods) {
     return new Container(
       width: ScreenUtil().setWidth(375),
       child: new InkWell(
         onTap: () {
-          print("onTab");
+          Application.jumperDetail(context, goods["goodsId"]);
         },
         child: Image.network(goods["image"]),
       ),
