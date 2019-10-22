@@ -4,6 +4,8 @@ import 'package:flutter_shop/provide/details_info.dart';
 import 'package:flutter_shop/pages/detail_page/details_top_area.dart';
 import 'package:flutter_shop/pages/detail_page/details_explain.dart';
 import 'package:flutter_shop/pages/detail_page/details_tabbar.dart';
+import 'package:flutter_shop/pages/detail_page/details_web.dart';
+import 'package:flutter_shop/pages/detail_page/details_bottom.dart';
 
 class DetailsPage extends StatelessWidget {
   final String goodsId;
@@ -26,14 +28,24 @@ class DetailsPage extends StatelessWidget {
         body: new FutureBuilder(
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return new Container(
-                  child: new ListView(
-                    children: <Widget>[
-                      DetailsTopArea(),
-                      DetailsExplain(),
-                      DetailsTabbar(),
-                    ],
-                  ),
+                return new Stack(
+                  children: <Widget>[
+                    new Container(
+                      child: new ListView(
+                        children: <Widget>[
+                          DetailsTopArea(),
+                          DetailsExplain(),
+                          DetailsTabbar(),
+                          new DetailsWeb(),
+                        ],
+                      ),
+                    ),
+                    new Positioned(
+                      child: new DetailsBottom(),
+                      bottom: 0,
+                      left: 0,
+                    )
+                  ],
                 );
               } else {
                 return new Center(

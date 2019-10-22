@@ -8,10 +8,11 @@ class DetailsInfoProvide with ChangeNotifier {
 
   /*
    根据id获取商品详细信息
+     增加async和await，保证异步执行正常
    */
-  void getGoodsInfo(String id) {
+  void getGoodsInfo(String id) async {
     Map dataMap = {"goodId": id};
-    request("getGoodDetailById", formData: dataMap).then((value) {
+    await request("getGoodDetailById", formData: dataMap).then((value) {
       Map<String, dynamic> decode = json.decode(value.toString());
       goodsInfo = DetailsModel.fromJson(decode);
       notifyListeners();

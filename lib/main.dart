@@ -7,6 +7,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter_shop/routers/routers.dart';
 import 'package:flutter_shop/routers/application.dart';
 import 'package:flutter_shop/provide/details_info.dart';
+import 'package:flutter_shop/provide/cart.dart';
 
 void main() {
   //全局状态控制,采用provide方式
@@ -14,11 +15,14 @@ void main() {
   CategoryGoodsListProvide categoryGoodsListProvide =
       new CategoryGoodsListProvide();
   DetailsInfoProvide detailsInfoProvide = new DetailsInfoProvide();
+  CartProvide cartProvide = new CartProvide();
   Providers providers = new Providers();
   providers..provide(Provider<ChildCategory>.value(category));
-  providers..provide(Provider<CategoryGoodsListProvide>.value(categoryGoodsListProvide));
+  providers
+    ..provide(
+        Provider<CategoryGoodsListProvide>.value(categoryGoodsListProvide));
   providers..provide(Provider<DetailsInfoProvide>.value(detailsInfoProvide));
-
+  providers..provide(Provider<CartProvide>.value(cartProvide));
   runApp(ProviderNode(child: new MyApp(), providers: providers));
 }
 
@@ -36,7 +40,7 @@ class MyApp extends StatelessWidget {
         //去除右上角debug角标
         theme: new ThemeData(primaryColor: Colors.pink),
 //路由默认配置
-//     initialRoute: ,
+//      initialRoute: ,
 //      routes: ,
         home: IndexPage(),
         onGenerateRoute: Application.router.generator,
