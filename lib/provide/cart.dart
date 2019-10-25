@@ -11,6 +11,8 @@ class CartProvide with ChangeNotifier {
 
   void save(String goodId, String goodsName, int count, double price,
       String images) async {
+    this.totalPrice = 0;
+    this.number = 0;
     SharedPreferences sp = await SharedPreferences.getInstance();
     String cartString = sp.getString("cartInfo");
     List<Map> temp = cartString == null
@@ -25,6 +27,13 @@ class CartProvide with ChangeNotifier {
         cartList[ival].count++;
         isHave = true;
       }
+      if (value["check"]) {
+        //选中才相加价格
+        this.totalPrice += value["price"] * value["count"];
+        this.number += value["count"];
+      } else {
+        allSelect = false;
+      }
       ival++;
     });
     if (!isHave) {
@@ -37,10 +46,13 @@ class CartProvide with ChangeNotifier {
       map["check"] = true;
       temp.add(map);
       cartList.add(CartInfoModel.fromJson(map));
+      this.totalPrice += price * count;
+      this.number += count;
     }
     String jsonStr = json.encode(temp).toString();
     sp.setString("cartInfo", jsonStr);
 //    print("添加数据 ${jsonStr}");
+    notifyListeners();
   }
 
   void remove() async {
@@ -135,6 +147,36 @@ class CartProvide with ChangeNotifier {
       tempList1.add(value);
     }
     String jsonStr = json.encode(tempList1).toString();
+    sp.setString("cartInfo", jsonStr);
+    this.getCartInfo();
+  }
+
+  /*
+  商品数量加减
+   */
+  void addOrSubCart(CartInfoModel cartInfoModel, int type) async {
+    if (type < 0 && cartInfoModel.count <= 1) {
+      return;
+    }
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    String jsonString = sp.getString("cartInfo");
+    List<Map> tempList = (json.decode(jsonString.toString()) as List).cast();
+    int changeIndex = 0;
+    int tempIndex = 0;
+    tempList.forEach((value) {
+      //dart 循环不允许更新列表的数据
+      if (value["goodsId"] == cartInfoModel.goodsId) {
+        changeIndex = tempIndex;
+      }
+      tempIndex++;
+    });
+    if (type > 0) {
+      cartInfoModel.count++;
+    } else {
+      cartInfoModel.count--;
+    }
+    tempList[changeIndex] = cartInfoModel.toJson();
+    String jsonStr = json.encode(tempList).toString();
     sp.setString("cartInfo", jsonStr);
     this.getCartInfo();
   }

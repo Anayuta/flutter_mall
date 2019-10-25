@@ -4,6 +4,7 @@ import 'package:flutter_shop/provide/cart.dart';
 import 'package:flutter_shop/provide/details_info.dart';
 import 'package:provide/provide.dart';
 import 'package:flutter_shop/model/details.dart';
+import 'package:flutter_shop/provide/current_index.dart';
 
 class DetailsBottom extends StatelessWidget {
   @override
@@ -22,21 +23,53 @@ class DetailsBottom extends StatelessWidget {
       color: Colors.white,
       child: new Row(
         children: <Widget>[
-          new InkWell(
-            onTap: () {},
-            child: new Container(
-              width: ScreenUtil().setWidth(110.0),
-              alignment: Alignment.center, //上下左右都居中对齐
-              child: new Icon(
-                Icons.shopping_cart,
-                color: Colors.pink,
-                size: 35,
+          new Stack(
+            children: <Widget>[
+              new InkWell(
+                onTap: () {
+                  Provide.value<CurrentIndexProvide>(context).setChangeIndex(2);
+                  Navigator.pop(context);
+                },
+                child: new Container(
+                  width: ScreenUtil().setWidth(110.0),
+                  alignment: Alignment.center, //上下左右都居中对齐
+                  child: new Icon(
+                    Icons.shopping_cart,
+                    color: Colors.pink,
+                    size: 35,
+                  ),
+                ),
               ),
-            ),
+              Provide<CartProvide>(
+                builder: (
+                  BuildContext context,
+                  Widget child,
+                  CartProvide value,
+                ) {
+                  int number = value.number;
+                  return new Positioned(
+                    top: 0,
+                    right: 10,
+                    child: new Container(
+                      decoration: new BoxDecoration(
+                          color: Colors.pink,
+                          borderRadius: new BorderRadius.circular(12),
+                          border:
+                              new Border.all(width: 2, color: Colors.white)),
+                      padding: new EdgeInsets.fromLTRB(6, 3, 6, 3),
+                      child: new Text(
+                        "${number}",
+                        style: new TextStyle(color: Colors.white, fontSize: 14),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
           new InkWell(
             onTap: () async {
-              await Provide.value<CartProvide>(context)
+              Provide.value<CartProvide>(context)
                   .save(goodId, goodsName, count, price, images);
             },
             child: new Container(

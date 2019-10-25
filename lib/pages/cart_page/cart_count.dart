@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provide/provide.dart';
+import 'package:flutter_shop/provide/cart.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_shop/model/cartInfo.dart';
 
 class CartCount extends StatelessWidget {
+  final CartInfoModel mCartInfoModel;
+
+  CartCount(this.mCartInfoModel);
+
   @override
   Widget build(BuildContext context) {
     return new Container(
@@ -13,9 +20,9 @@ class CartCount extends StatelessWidget {
       ),
       child: new Row(
         children: <Widget>[
-          _subBtn(),
+          _subBtn(context),
           _numberView(),
-          _addBtn(),
+          _addBtn(context),
         ],
       ),
     );
@@ -24,18 +31,20 @@ class CartCount extends StatelessWidget {
   /*
    减号
    */
-  Widget _subBtn() {
+  Widget _subBtn(BuildContext context) {
     return new InkWell(
-      onTap: () {},
+      onTap: () {
+        Provide.value<CartProvide>(context).addOrSubCart(mCartInfoModel, -1);
+      },
       child: new Container(
         width: ScreenUtil().setWidth(45.0),
         height: ScreenUtil().setWidth(45.0),
         alignment: Alignment.center,
         decoration: new BoxDecoration(
-            color: Colors.white,
+            color: mCartInfoModel.count > 1 ? Colors.white : Colors.black12,
             border: new Border(
                 right: new BorderSide(width: 1.0, color: Colors.black12))),
-        child: new Text("-"),
+        child: new Text(mCartInfoModel.count > 1 ? "-" : ""),
       ),
     );
   }
@@ -43,9 +52,11 @@ class CartCount extends StatelessWidget {
   /*
    加号
    */
-  Widget _addBtn() {
+  Widget _addBtn(BuildContext context) {
     return new InkWell(
-      onTap: () {},
+      onTap: () {
+        Provide.value<CartProvide>(context).addOrSubCart(mCartInfoModel, 1);
+      },
       child: new Container(
         width: ScreenUtil().setWidth(45.0),
         height: ScreenUtil().setWidth(45.0),
@@ -68,7 +79,7 @@ class CartCount extends StatelessWidget {
       height: ScreenUtil().setWidth(45.0),
       alignment: Alignment.center,
       color: Colors.white,
-      child: new Text("1"),
+      child: new Text("${mCartInfoModel.count}"),
     );
   }
 }

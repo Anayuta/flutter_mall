@@ -8,6 +8,7 @@ import 'package:flutter_shop/routers/routers.dart';
 import 'package:flutter_shop/routers/application.dart';
 import 'package:flutter_shop/provide/details_info.dart';
 import 'package:flutter_shop/provide/cart.dart';
+import 'package:flutter_shop/provide/current_index.dart';
 
 void main() {
   //全局状态控制,采用provide方式
@@ -16,6 +17,8 @@ void main() {
       new CategoryGoodsListProvide();
   DetailsInfoProvide detailsInfoProvide = new DetailsInfoProvide();
   CartProvide cartProvide = new CartProvide();
+  CurrentIndexProvide currentIndexProvide = new CurrentIndexProvide();
+
   Providers providers = new Providers();
   providers..provide(Provider<ChildCategory>.value(category));
   providers
@@ -23,6 +26,7 @@ void main() {
         Provider<CategoryGoodsListProvide>.value(categoryGoodsListProvide));
   providers..provide(Provider<DetailsInfoProvide>.value(detailsInfoProvide));
   providers..provide(Provider<CartProvide>.value(cartProvide));
+  providers..provide(Provider<CurrentIndexProvide>.value(currentIndexProvide));
   runApp(ProviderNode(child: new MyApp(), providers: providers));
 }
 
