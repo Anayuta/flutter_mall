@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage>
     return new Scaffold(
       appBar: new AppBar(
         title: Text("百姓生活+"),
-        centerTitle: true,
+//        centerTitle: true,
       ),
       //FutureBuilder 异步builder
       body: new FutureBuilder(
